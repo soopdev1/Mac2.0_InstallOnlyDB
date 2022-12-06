@@ -194,6 +194,7 @@ public class Run extends javax.swing.JFrame {
                         || tablename.equals("sito_spread")
                         || tablename.equals("sito_stato")
                         || tablename.equals("sito_supporti")
+                        || tablename.equals("unlockrate_justify")
                         || tablename.equals("comuni_apm")) {
 
                     dbfiliale = new Db(hostfiliale, true);
