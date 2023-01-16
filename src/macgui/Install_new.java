@@ -243,7 +243,6 @@ public class Install_new extends javax.swing.JFrame {
                     List<String[]> columnNames = new ArrayList<>();
                     ResultSetMetaData columns = rs.getMetaData();
                     rs.afterLast(); //Moves the curser to the end of the ResultSet object
-                    StringBuilder sb1 = new StringBuilder();
                     String insert = "INSERT INTO " + table + " VALUES (";
                     int i = 0;
                     while (i < columns.getColumnCount()) {
@@ -298,7 +297,7 @@ public class Install_new extends javax.swing.JFrame {
                     errore.addAndGet(1);
                     erroredescr.append("1. NO RESULTSET.");
                 }
-            } catch (SQLException e) {
+            } catch (Exception e) {
                 e.printStackTrace();
             }
             index.addAndGet(1);
