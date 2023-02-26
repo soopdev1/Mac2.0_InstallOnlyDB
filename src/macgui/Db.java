@@ -13,6 +13,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Properties;
 import static macgui.Utility.patternsqldate;
+import static macgui.Utility.rb;
 import org.joda.time.DateTime;
 
 /**
@@ -34,13 +35,11 @@ public class Db {
     }
 
     public Db(String host, boolean filiale) {
-        String drivername = "org.mariadb.jdbc.Driver";
-        String typedb = "mariadb";
+        String drivername = rb.getString("db.driver");
+        String typedb = rb.getString("db.tipo");
         String user = "maccorp";
         String pwd = "M4cc0Rp";
         if (filiale) {
-            drivername = "com.mysql.cj.jdbc.Driver";
-            typedb = "mysql";
             user = "root";
             pwd = "root";
             host = "//" + host + ":3306/maccorp";
@@ -54,9 +53,12 @@ public class Db {
             p.put("characterEncoding", "UTF-8");
             p.put("useSSL", "false");
             p.put("connectTimeout", "1000");
-            System.out.println("jdbc:" + typedb + ":" + host);
+            p.put("useUnicode", "true");
+            p.put("useJDBCCompliantTimezoneShift", "true");
+            p.put("useLegacyDatetimeCode", "false");
+            p.put("serverTimezone", "Europe/Rome");
             this.c = DriverManager.getConnection("jdbc:" + typedb + ":" + host, p);
-        } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | SQLException ex) {
+        } catch (Exception ex) {
             ex.printStackTrace();
         }
 

@@ -69,7 +69,7 @@ public class Install_new extends javax.swing.JFrame {
         setTitle("Frontend Maccorp");
 
         jLabel1.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
-        jLabel1.setText("Mac 2.0 - Install Database v1.5");
+        jLabel1.setText("Mac 2.0 - Install Database v1.6");
 
         jLabel2.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         jLabel2.setText("BRANCH ID:");

@@ -8,6 +8,7 @@ package macgui;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
+import java.util.ResourceBundle;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.joda.time.DateTime;
 import org.joda.time.format.DateTimeFormat;
@@ -19,12 +20,14 @@ import org.joda.time.format.DateTimeFormatter;
  */
 public class Utility {
 
+    public static final ResourceBundle rb = ResourceBundle.getBundle("macgui.conf");
+
     public static final String patternnormdate = "dd/MM/yyyy HH:mm:ss";
     public static final String patternsqldate = "yyyy-MM-dd HH:mm:ss";
     public static final String patternsql = "yyyy-MM-dd";
-    public static final String hostPROD = "//172.18.17.41:3306/maccorpita";
-//    public static final String hostPROD = "//172.18.17.41:3306/maccorp";
-    public static final String hostTEST = "//172.18.17.41:3306/maccorp";
+
+    public static final String hostPROD = rb.getString("db.ip") + "/maccorpita";
+    public static final String hostTEST = rb.getString("db.ip") + "/maccorp";
 
     public static String generaId(int length) {
         String random = RandomStringUtils.randomAlphanumeric(length - 15).trim();
@@ -349,7 +352,6 @@ public class Utility {
 
 //            elencotabelle.add("codici_fiscali_italia");
 //            elencoquery.add("SELECT * FROM codici_fiscali_italia");
-
             elencotabelle.add("codici_fiscali_mese");
             elencoquery.add("SELECT * FROM codici_fiscali_mese");
 
@@ -363,7 +365,6 @@ public class Utility {
 //            elencoquery.add("SELECT * FROM compro");
 //            elencotabelle.add("comuni_apm");
 //            elencoquery.add("SELECT * FROM comuni_apm");
-
             elencotabelle.add("configmonitor");
             elencoquery.add("SELECT * FROM configmonitor");
 
