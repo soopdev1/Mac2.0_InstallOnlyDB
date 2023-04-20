@@ -77,7 +77,7 @@ public class Db {
     public boolean updateBranch(String[] val) {
         try {
             String upd = "UPDATE branch SET add_via = ?, add_city = ?, add_cap = ? WHERE cod = ?";
-            PreparedStatement ps = this.c.prepareStatement(upd);
+            PreparedStatement ps = this.c.prepareStatement(upd, ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_UPDATABLE);
             ps.setString(1, val[1]);
             ps.setString(2, val[2]);
             ps.setString(3, val[3]);
@@ -94,7 +94,7 @@ public class Db {
         ArrayList<String> li = new ArrayList<>();
         try {
             String sql = "SELECT distinct(filiale) FROM valute WHERE filiale <>'000' AND buy_std = '0.00' and valuta<>'EUR'";
-            ResultSet rs = this.c.createStatement().executeQuery(sql);
+            ResultSet rs = this.c.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_UPDATABLE).executeQuery(sql);
             while (rs.next()) {
                 li.add(rs.getString(1));
             }
@@ -107,7 +107,7 @@ public class Db {
     public String getNow() {
         try {
             String sql = "SELECT now()";
-            PreparedStatement ps = this.c.prepareStatement(sql);
+            PreparedStatement ps = this.c.prepareStatement(sql,ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_UPDATABLE);
             ResultSet rs = ps.executeQuery();
             if (rs.next()) {
                 return rs.getString(1);
@@ -122,7 +122,7 @@ public class Db {
         ArrayList<String> out = new ArrayList<>();
         try {
             String sql = "SELECT cod FROM branch WHERE fg_annullato = ? AND filiale = ? ORDER BY cod";
-            PreparedStatement ps = this.c.prepareStatement(sql);
+            PreparedStatement ps = this.c.prepareStatement(sql,ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_UPDATABLE);
             ps.setString(1, "0");
             ps.setString(2, "000");
             ResultSet rs = ps.executeQuery();
@@ -139,7 +139,7 @@ public class Db {
         ArrayList<String[]> out = new ArrayList<>();
         try {
             String sql = "SELECT filiale,ip FROM dbfiliali";
-            PreparedStatement ps = this.c.prepareStatement(sql);
+            PreparedStatement ps = this.c.prepareStatement(sql,ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_UPDATABLE);
             ResultSet rs = ps.executeQuery();
             while (rs.next()) {
                 String[] ip = {rs.getString(1), rs.getString(2)};
@@ -156,7 +156,7 @@ public class Db {
         try {
 //            String sql = "SELECT filiale,count(*) FROM aggiornamenti_mod WHERE fg_stato='0' group by filiale";
             String sql = "SELECT filiale,count(*) FROM aggiornamenti_mod WHERE fg_stato='0' AND now()>STR_TO_DATE(dt_start, '%d/%m/%Y %H:%i:%s') group by filiale";
-            PreparedStatement ps = this.c.prepareStatement(sql);
+            PreparedStatement ps = this.c.prepareStatement(sql,ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_UPDATABLE);
             ResultSet rs = ps.executeQuery();
             while (rs.next()) {
                 String[] ip = {rs.getString(1), rs.getString(2)};
@@ -171,7 +171,7 @@ public class Db {
     public String getConf(String id) {
         try {
             String sql = "SELECT des FROM conf WHERE id = ? ";
-            PreparedStatement ps = this.c.prepareStatement(sql);
+            PreparedStatement ps = this.c.prepareStatement(sql,ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_UPDATABLE);
             ps.setString(1, id);
             ResultSet rs = ps.executeQuery();
             if (rs.next()) {
@@ -195,7 +195,7 @@ public class Db {
         ArrayList<String[]> li = new ArrayList<>();
         try {
             String sql = "SELECT filiale,count(*) FROM aggiornamenti_mod Where fg_stato='0' group by filiale";
-            ResultSet rs = this.c.createStatement().executeQuery(sql);
+            ResultSet rs = this.c.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_UPDATABLE).executeQuery(sql);
 
             while (rs.next()) {
                 String[] ou = {rs.getString(1), rs.getString(2)};
@@ -214,7 +214,7 @@ public class Db {
         try {
             //String sql = "SELECT count(*) FROM aggiornamenti_mod Where fg_stato='0' ";
             String sql = "SELECT count(*) FROM aggiornamenti_mod Where fg_stato='0' AND now()>STR_TO_DATE(dt_start, '%d/%m/%Y %H:%i:%s'); ";
-            ResultSet rs = this.c.createStatement().executeQuery(sql);
+            ResultSet rs = this.c.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_UPDATABLE).executeQuery(sql);
             while (rs.next()) {
                 agg = agg + rs.getInt(1);
             }
@@ -229,7 +229,7 @@ public class Db {
         try {
             String sql = "SELECT filiale,count(*) FROM aggiornamenti_mod Where fg_stato='0' AND filiale = '" + filiale + "' group by filiale";
 
-            ResultSet rs = this.c.createStatement().executeQuery(sql);
+            ResultSet rs = this.c.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_UPDATABLE).executeQuery(sql);
             while (rs.next()) {
                 System.out.println("FILIALE ORIGINE: " + filiale + " - RISULTATI: " + rs.getString(1) + " : " + rs.getString(2));
             }
@@ -243,7 +243,7 @@ public class Db {
         try {
             String sql = "SET GLOBAL max_allowed_packet = 1024*1024*14;";
             PreparedStatement ps = this.c.prepareStatement(sql);
-            ps.executeQuery();
+            ps.execute();
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -252,7 +252,7 @@ public class Db {
 
     public ResultSet getData(String sql) {
         try {
-            PreparedStatement ps = this.c.prepareStatement(sql);
+            PreparedStatement ps = this.c.prepareStatement(sql,ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_UPDATABLE);
             return ps.executeQuery();
         } catch (SQLException e) {
             e.printStackTrace();
@@ -263,7 +263,7 @@ public class Db {
     public String[] addInfo(ResultSet rs1, String sql1, int colsize) {
         String[] out = new String[3];
         try {
-            PreparedStatement ps = this.c.prepareStatement(sql1);
+            PreparedStatement ps = this.c.prepareStatement(sql1,ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_UPDATABLE);
             for (int i = 0; i < colsize; i++) {
                 ps.setString(i + 1, rs1.getString(i + 1));
             }
@@ -289,7 +289,7 @@ public class Db {
     public String[] addInfo(String sql1) {
         String[] out = new String[3];
         try {
-            PreparedStatement ps = this.c.prepareStatement(sql1);
+            PreparedStatement ps = this.c.prepareStatement(sql1,ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_UPDATABLE);
             out[0] = "false";
             out[1] = ps.toString();
             if (ps.executeUpdate() > 0) {
@@ -312,7 +312,7 @@ public class Db {
     public boolean eseuitruncate(String tablename) {
         try {
             String sql = "truncate table " + tablename;
-            PreparedStatement ps = this.c.prepareStatement(sql);
+            PreparedStatement ps = this.c.prepareStatement(sql,ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_UPDATABLE);
             return ps.execute();
         } catch (SQLException ex) {
             ex.printStackTrace();
