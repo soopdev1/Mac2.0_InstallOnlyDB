@@ -238,7 +238,7 @@ public class Install_new extends javax.swing.JFrame {
             System.out.println("TABELLA: " + table + " - QUERY : " + elencoquery.get(index.get()));
             try {
 
-                ResultSet rs = db.getC().createStatement().executeQuery(elencoquery.get(index.get()));
+                ResultSet rs = db.getC().createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_UPDATABLE).executeQuery(elencoquery.get(index.get()));
                 if (rs != null) {
                     List<String[]> columnNames = new ArrayList<>();
                     ResultSetMetaData columns = rs.getMetaData();
@@ -257,7 +257,7 @@ public class Install_new extends javax.swing.JFrame {
                     if (dbfiliale.getC() != null) {
                         dbfiliale.setDim();
                         while (rs.previous()) {
-                            PreparedStatement psins = dbfiliale.getC().prepareStatement(insert);
+                            PreparedStatement psins = dbfiliale.getC().prepareStatement(insert,ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_UPDATABLE);
                             columnNames.forEach(cn -> {
                                 try {
                                     psins.setString(Integer.parseInt(cn[0]), rs.getString(cn[1]));
@@ -308,11 +308,11 @@ public class Install_new extends javax.swing.JFrame {
         Db dbfiliale = new Db(hostfiliale, true);
         if (dbfiliale.getC() != null) {
             try {
-                dbfiliale.getC().createStatement().executeUpdate("UPDATE path SET descr = 'C:\\\\Maccorp\\\\temp\\\\' where cod = 'temp'");
-                dbfiliale.getC().createStatement().execute("INSERT INTO local (cod) VALUES ('" + filiale + "')");
+                dbfiliale.getC().createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_UPDATABLE).executeUpdate("UPDATE path SET descr = 'C:\\\\Maccorp\\\\temp\\\\' where cod = 'temp'");
+                dbfiliale.getC().createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_UPDATABLE).execute("INSERT INTO local (cod) VALUES ('" + filiale + "')");
             } catch (SQLException e) {
-                errore.addAndGet(1);
-                erroredescr.append("3. QUERY ERROR: path - ERROR - ").append(e.getMessage());
+//                errore.addAndGet(1);
+//                erroredescr.append("3. QUERY ERROR: path - ERROR - ").append(e.getMessage());
             }
             dbfiliale.closeDB();
         }
@@ -357,7 +357,7 @@ public class Install_new extends javax.swing.JFrame {
                     }
                 }
 
-                ResultSet rs = db.getC().createStatement().executeQuery(elencoquery.get(index.get()));
+                ResultSet rs = db.getC().createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_UPDATABLE).executeQuery(elencoquery.get(index.get()));
                 if (rs != null) {
                     List<String[]> columnNames = new ArrayList<>();
                     ResultSetMetaData columns = rs.getMetaData();
@@ -377,7 +377,7 @@ public class Install_new extends javax.swing.JFrame {
                     if (dbfiliale.getC() != null) {
                         dbfiliale.setDim();
                         while (rs.previous()) {
-                            PreparedStatement psins = dbfiliale.getC().prepareStatement(insert);
+                            PreparedStatement psins = dbfiliale.getC().prepareStatement(insert,ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_UPDATABLE);
                             columnNames.forEach(cn -> {
                                 try {
                                     psins.setString(Integer.parseInt(cn[0]), rs.getString(cn[1]));
@@ -456,7 +456,7 @@ public class Install_new extends javax.swing.JFrame {
                     db = new Db(hostTEST, false);
                 }
 
-                ResultSet rs = db.getC().createStatement().executeQuery(elencoquery.get(index.get()));
+                ResultSet rs = db.getC().createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_UPDATABLE).executeQuery(elencoquery.get(index.get()));
                 if (rs != null) {
                     List<String[]> columnNames = new ArrayList<>();
                     ResultSetMetaData columns = rs.getMetaData();
@@ -477,7 +477,7 @@ public class Install_new extends javax.swing.JFrame {
                     if (dbfiliale.getC() != null) {
                         dbfiliale.setDim();
                         while (rs.previous()) {
-                            PreparedStatement psins = dbfiliale.getC().prepareStatement(insert);
+                            PreparedStatement psins = dbfiliale.getC().prepareStatement(insert,ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_UPDATABLE);
                             columnNames.forEach(cn -> {
                                 try {
                                     psins.setString(Integer.parseInt(cn[0]), rs.getString(cn[1]));
